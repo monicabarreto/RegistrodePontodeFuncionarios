@@ -109,89 +109,102 @@ const Ponto = () => {
     return `${horas}h ${minutos}m ${segundos}s`;
   };
 
-  return (
-    <div className="flex items-center justify-center min-h-screen bg-gradient-to-br from-white to-green-200 px-4">
-      <div className="w-full max-w-4xl bg-green-500 bg-opacity-90 rounded-2xl shadow-2xl p-6 font-sans">
-        <h2 className="text-3xl font-bold mb-6 text-center text-white p-5">
-          Registro de Pontos
-        </h2>
+ return (
+  <div
+    className="flex items-center justify-center min-h-screen bg-gradient-to-br from-white to-green-200 px-4 pt-20"
+    style={{ paddingTop: 80 }} // 80px só para garantir mais espaço que navbar
+  >
+    <div
+      className="w-full max-w-4xl bg-blue-700 bg-opacity-90 rounded-2xl shadow-2xl p-8 font-sans"
+      style={{ minHeight: 580 }}
+    >
+      
+      <div className="text-white mb-6 px-2 text-center">
+        <h2 className="text-3xl font-bold mb-8 text-center text-white">
+        Registro de Pontos
+      </h2>
+        <h3 className="text-base font-semibold">
+          Data: {new Date().toLocaleDateString()}
+        </h3>
+       
+      </div>
 
+      {/* Container fixo para câmera / botão */}
+      <div
+        className="flex flex-col items-center justify-center mb-8 rounded-xl shadow-lg"
+        style={{ width: 360, height: 300, margin: "0 auto" }}
+      >
         {isCameraActive ? (
-          <div className="text-center mb-6">
+          <>
             <video
               ref={cameraRef}
               autoPlay
               width={320}
               height={240}
-              className="mx-auto rounded-lg shadow-lg"
+              className="rounded-lg shadow-md border border-gray-300"
             />
             <button
-              className="mt-4 px-6 py-2 text-white font-semibold bg-green-600 rounded-xl shadow-md hover:bg-green-700 hover:shadow-lg transition"
               onClick={capturarFoto}
+              className="mt-4 px-8 py-2 bg-green-600 text-white font-semibold rounded-xl shadow-md transition hover:bg-green-700 hover:shadow-lg cursor-pointer"
             >
               Registrar
             </button>
-          </div>
+          </>
         ) : (
-          <div className="text-center mb-6">
-            <button
-              className="px-6 py-2 text-black font-semibold bg-gradient-to-r from-pink-500 to-blue-500 rounded-xl shadow-md hover:shadow-lg transition"
-              onClick={abrirCamera}
-            >
-              Registre seu ponto
-            </button>
-          </div>
+          <button
+            onClick={abrirCamera}
+            className="px-8 py-2 bg-green-600 text-white font-semibold rounded-xl shadow-md transition hover:bg-blue-700 hover:shadow-lg cursor-pointer"
+            style={{ height: 56, width: 320 }}
+          >
+            Registre seu ponto
+          </button>
         )}
-
-        <div className="text-white mb-4">
-          <h3 className="text-base font-semibold">
-            Data: {new Date().toLocaleDateString()}
-          </h3>
-          <h3 className="text-base font-semibold mb-2">Registro de Ponto</h3>
-        </div>
-
-        <div className="flex justify-center overflow-x-auto">
-          <table className="table-auto border-collapse mb-4 text-sm text-gray-800 bg-white rounded shadow overflow-hidden min-w-[320px]">
-            <thead>
-              <tr className="bg-gray-200">
-                <th className="border px-4 py-2">Hora</th>
-                <th className="border px-4 py-2">Tipo</th>
-                <th className="border px-4 py-2">Foto</th>
-              </tr>
-            </thead>
-            <tbody>
-              {registros.map((registro, index) => (
-                <tr key={index} className="text-center align-middle">
-                  <td className="border px-4 py-2">{registro.hora}</td>
-                  <td className="border px-4 py-2">{registro.nome}</td>
-                  <td className="border px-4 py-2">
-                    {fotoVisivel === index && registro.foto && (
-                      <img
-                        src={registro.foto}
-                        alt="Foto do ponto"
-                        width={100}
-                        className="mx-auto rounded shadow-md mb-2"
-                      />
-                    )}
-                    <button
-                      className="px-3 py-1 text-xs bg-gradient-to-r from-purple-400 to-indigo-500 rounded shadow hover:shadow-md transition"
-                      onClick={() => toggleFoto(index)}
-                    >
-                      👁️
-                    </button>
-                  </td>
-                </tr>
-              ))}
-            </tbody>
-          </table>
-        </div>
-
-        <h4 className="text-right font-semibold mt-4 text-white">
-          Horas Trabalhadas: {calcularHorasTrabalhadas()}
-        </h4>
       </div>
+
+
+      <div className="flex justify-center overflow-x-auto px-2">
+        <table className="table-auto border-collapse mb-6 text-sm text-gray-800 bg-white rounded-lg shadow overflow-hidden min-w-[320px]">
+          <thead>
+            <tr className="bg-gray-300">
+              <th className="border px-4 py-2">Hora</th>
+              <th className="border px-4 py-2">Tipo</th>
+              <th className="border px-4 py-2">Foto</th>
+            </tr>
+          </thead>
+          <tbody>
+            {registros.map((registro, index) => (
+              <tr key={index} className="text-center align-middle">
+                <td className="border px-4 py-2">{registro.hora}</td>
+                <td className="border px-4 py-2">{registro.nome}</td>
+                <td className="border px-4 py-2">
+                  {fotoVisivel === index && registro.foto && (
+                    <img
+                      src={registro.foto}
+                      alt="Foto do ponto"
+                      width={100}
+                      className="mx-auto rounded shadow-md mb-2 border border-gray-300"
+                    />
+                  )}
+                  <button
+                    onClick={() => toggleFoto(index)}
+                    className="px-3 py-1 text-xs bg-blue-600 text-white rounded shadow transition hover:bg-blue-700 hover:shadow-lg cursor-pointer"
+                  >
+                    👁️
+                  </button>
+                </td>
+              </tr>
+            ))}
+          </tbody>
+        </table>
+      </div>
+
+      <h4 className="text-right flex justify-center font-semibold mt-4 text-white">
+        Horas Trabalhadas: {calcularHorasTrabalhadas()}
+      </h4>
     </div>
-  );
+  </div>
+);
+
 };
 
 export default Ponto;
